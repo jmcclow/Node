@@ -151,7 +151,7 @@ mod tests {
             let system = System::new("spawn_stream_reader_handles_data");
             let peer_actors = peer_actors_builder().proxy_client(proxy_client).build();
             sub_tx
-                .send(peer_actors.proxy_client.inbound_server_data)
+                .send(peer_actors.proxy_client_opt.unwrap().inbound_server_data)
                 .expect("Unable to send inbound_server_data sub from proxy_client to test");
             system.run();
         });

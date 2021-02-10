@@ -572,7 +572,7 @@ mod tests {
             main_cryptde,
             alias_cryptde,
             RoutingServiceSubs {
-                proxy_client_subs: peer_actors.proxy_client,
+                proxy_client_subs: peer_actors.proxy_client_opt.unwrap(),
                 proxy_server_subs: peer_actors.proxy_server,
                 neighborhood_subs: peer_actors.neighborhood,
                 hopper_subs: peer_actors.hopper,
@@ -618,7 +618,7 @@ mod tests {
             main_cryptde,
             alias_cryptde,
             RoutingServiceSubs {
-                proxy_client_subs: peer_actors.proxy_client,
+                proxy_client_subs: peer_actors.proxy_client_opt.unwrap(),
                 proxy_server_subs: peer_actors.proxy_server,
                 neighborhood_subs: peer_actors.neighborhood,
                 hopper_subs: peer_actors.hopper,
@@ -662,7 +662,7 @@ mod tests {
             main_cryptde,
             alias_cryptde,
             RoutingServiceSubs {
-                proxy_client_subs: peer_actors.proxy_client,
+                proxy_client_subs: peer_actors.proxy_client_opt.unwrap(),
                 proxy_server_subs: peer_actors.proxy_server,
                 neighborhood_subs: peer_actors.neighborhood,
                 hopper_subs: peer_actors.hopper,
@@ -711,7 +711,7 @@ mod tests {
             main_cryptde,
             alias_cryptde,
             RoutingServiceSubs {
-                proxy_client_subs: peer_actors.proxy_client,
+                proxy_client_subs: peer_actors.proxy_client_opt.unwrap(),
                 proxy_server_subs: peer_actors.proxy_server,
                 neighborhood_subs: peer_actors.neighborhood,
                 hopper_subs: peer_actors.hopper,
@@ -765,7 +765,7 @@ mod tests {
             main_cryptde,
             alias_cryptde,
             RoutingServiceSubs {
-                proxy_client_subs: peer_actors.proxy_client,
+                proxy_client_subs: peer_actors.proxy_client_opt.unwrap(),
                 proxy_server_subs: peer_actors.proxy_server,
                 neighborhood_subs: peer_actors.neighborhood,
                 hopper_subs: peer_actors.hopper,
@@ -833,7 +833,7 @@ mod tests {
             main_cryptde,
             alias_cryptde,
             RoutingServiceSubs {
-                proxy_client_subs: peer_actors.proxy_client,
+                proxy_client_subs: peer_actors.proxy_client_opt.unwrap(),
                 proxy_server_subs: peer_actors.proxy_server,
                 neighborhood_subs: peer_actors.neighborhood,
                 hopper_subs: peer_actors.hopper,
@@ -911,7 +911,7 @@ mod tests {
             main_cryptde,
             alias_cryptde,
             RoutingServiceSubs {
-                proxy_client_subs: peer_actors.proxy_client,
+                proxy_client_subs: peer_actors.proxy_client_opt.unwrap(),
                 proxy_server_subs: peer_actors.proxy_server,
                 neighborhood_subs: peer_actors.neighborhood,
                 hopper_subs: peer_actors.hopper,
@@ -985,7 +985,7 @@ mod tests {
             cryptde,
             alias_cryptde(),
             RoutingServiceSubs {
-                proxy_client_subs: peer_actors.proxy_client,
+                proxy_client_subs: peer_actors.proxy_client_opt.unwrap(),
                 proxy_server_subs: peer_actors.proxy_server,
                 neighborhood_subs: peer_actors.neighborhood,
                 hopper_subs: peer_actors.hopper,
@@ -1064,7 +1064,7 @@ mod tests {
             main_cryptde,
             alias_cryptde,
             RoutingServiceSubs {
-                proxy_client_subs: peer_actors.proxy_client,
+                proxy_client_subs: peer_actors.proxy_client_opt.unwrap(),
                 proxy_server_subs: peer_actors.proxy_server,
                 neighborhood_subs: peer_actors.neighborhood,
                 hopper_subs: peer_actors.hopper,
@@ -1153,7 +1153,7 @@ mod tests {
             main_cryptde,
             alias_cryptde,
             RoutingServiceSubs {
-                proxy_client_subs: peer_actors.proxy_client,
+                proxy_client_subs: peer_actors.proxy_client_opt.unwrap(),
                 proxy_server_subs: peer_actors.proxy_server,
                 neighborhood_subs: peer_actors.neighborhood,
                 hopper_subs: peer_actors.hopper,
@@ -1243,7 +1243,7 @@ mod tests {
             main_cryptde,
             alias_cryptde,
             RoutingServiceSubs {
-                proxy_client_subs: peer_actors.proxy_client,
+                proxy_client_subs: peer_actors.proxy_client_opt.unwrap(),
                 proxy_server_subs: peer_actors.proxy_server,
                 neighborhood_subs: peer_actors.neighborhood,
                 hopper_subs: peer_actors.hopper,
@@ -1344,7 +1344,7 @@ mod tests {
             main_cryptde,
             alias_cryptde,
             RoutingServiceSubs {
-                proxy_client_subs: peer_actors.proxy_client,
+                proxy_client_subs: peer_actors.proxy_client_opt.unwrap(),
                 proxy_server_subs: peer_actors.proxy_server,
                 neighborhood_subs: peer_actors.neighborhood,
                 hopper_subs: peer_actors.hopper,
@@ -1440,7 +1440,7 @@ mod tests {
             main_cryptde,
             alias_cryptde,
             RoutingServiceSubs {
-                proxy_client_subs: peer_actors.proxy_client,
+                proxy_client_subs: peer_actors.proxy_client_opt.unwrap(),
                 proxy_server_subs: peer_actors.proxy_server,
                 neighborhood_subs: peer_actors.neighborhood,
                 hopper_subs: peer_actors.hopper,
@@ -1513,7 +1513,7 @@ mod tests {
             main_cryptde,
             alias_cryptde,
             RoutingServiceSubs {
-                proxy_client_subs: peer_actors.proxy_client,
+                proxy_client_subs: peer_actors.proxy_client_opt.unwrap(),
                 proxy_server_subs: peer_actors.proxy_server,
                 neighborhood_subs: peer_actors.neighborhood,
                 hopper_subs: peer_actors.hopper,
@@ -1584,7 +1584,7 @@ mod tests {
             main_cryptde,
             alias_cryptde,
             RoutingServiceSubs {
-                proxy_client_subs: peer_actors.proxy_client,
+                proxy_client_subs: peer_actors.proxy_client_opt.unwrap(),
                 proxy_server_subs: peer_actors.proxy_server,
                 neighborhood_subs: peer_actors.neighborhood,
                 hopper_subs: peer_actors.hopper,
@@ -1634,7 +1634,7 @@ mod tests {
             main_cryptde(),
             alias_cryptde(),
             RoutingServiceSubs {
-                proxy_client_subs: peer_actors.proxy_client,
+                proxy_client_subs: peer_actors.proxy_client_opt.unwrap(),
                 proxy_server_subs: peer_actors.proxy_server,
                 neighborhood_subs: peer_actors.neighborhood,
                 hopper_subs: peer_actors.hopper,
@@ -1692,7 +1692,7 @@ mod tests {
             main_cryptde,
             alias_cryptde,
             RoutingServiceSubs {
-                proxy_client_subs: peer_actors.proxy_client,
+                proxy_client_subs: peer_actors.proxy_client_opt.unwrap(),
                 proxy_server_subs: peer_actors.proxy_server,
                 neighborhood_subs: peer_actors.neighborhood,
                 hopper_subs: peer_actors.hopper,
@@ -1725,7 +1725,7 @@ mod tests {
             main_cryptde(),
             alias_cryptde(),
             RoutingServiceSubs {
-                proxy_client_subs: peer_actors.proxy_client,
+                proxy_client_subs: peer_actors.proxy_client_opt.unwrap(),
                 proxy_server_subs: peer_actors.proxy_server,
                 neighborhood_subs: peer_actors.neighborhood,
                 hopper_subs: peer_actors.hopper,
@@ -1762,7 +1762,7 @@ mod tests {
             main_cryptde(),
             alias_cryptde(),
             RoutingServiceSubs {
-                proxy_client_subs: peer_actors.proxy_client,
+                proxy_client_subs: peer_actors.proxy_client_opt.unwrap(),
                 proxy_server_subs: peer_actors.proxy_server,
                 neighborhood_subs: peer_actors.neighborhood,
                 hopper_subs: peer_actors.hopper,
@@ -1802,7 +1802,7 @@ mod tests {
             main_cryptde(),
             alias_cryptde(),
             RoutingServiceSubs {
-                proxy_client_subs: peer_actors.proxy_client,
+                proxy_client_subs: peer_actors.proxy_client_opt.unwrap(),
                 proxy_server_subs: peer_actors.proxy_server,
                 neighborhood_subs: peer_actors.neighborhood,
                 hopper_subs: peer_actors.hopper,
@@ -1842,7 +1842,7 @@ mod tests {
             main_cryptde(),
             alias_cryptde(),
             RoutingServiceSubs {
-                proxy_client_subs: peer_actors.proxy_client,
+                proxy_client_subs: peer_actors.proxy_client_opt.unwrap(),
                 proxy_server_subs: peer_actors.proxy_server,
                 neighborhood_subs: peer_actors.neighborhood,
                 hopper_subs: peer_actors.hopper,
@@ -1882,7 +1882,7 @@ mod tests {
             main_cryptde(),
             alias_cryptde(),
             RoutingServiceSubs {
-                proxy_client_subs: peer_actors.proxy_client,
+                proxy_client_subs: peer_actors.proxy_client_opt.unwrap(),
                 proxy_server_subs: peer_actors.proxy_server,
                 neighborhood_subs: peer_actors.neighborhood,
                 hopper_subs: peer_actors.hopper,
@@ -1922,7 +1922,7 @@ mod tests {
             main_cryptde(),
             alias_cryptde(),
             RoutingServiceSubs {
-                proxy_client_subs: peer_actors.proxy_client,
+                proxy_client_subs: peer_actors.proxy_client_opt.unwrap(),
                 proxy_server_subs: peer_actors.proxy_server,
                 neighborhood_subs: peer_actors.neighborhood,
                 hopper_subs: peer_actors.hopper,
