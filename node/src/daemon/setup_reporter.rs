@@ -651,7 +651,10 @@ impl ValueRetriever for DnsServers {
     }
 
     fn is_required(&self, _params: &SetupCluster) -> bool {
-        true
+        match _params.get("neighborhood-mode") {
+            Some(nhm) if &nhm.value == "consume-only" => false,
+            _ => true,
+        }
     }
 }
 
@@ -2269,6 +2272,20 @@ mod tests {
                 ("standard", true),
                 ("zero-hop", false),
                 ("originate-only", false),
+                ("consume-only", false),
+            ],
+        );
+    }
+
+    #[test]
+    fn dnsservers_requirements() {
+        verify_requirements(
+            &DnsServers {},
+            "neighborhood-mode",
+            vec![
+                ("standard", true),
+                ("zero-hop", true),
+                ("originate-only", true),
                 ("consume-only", false),
             ],
         );
