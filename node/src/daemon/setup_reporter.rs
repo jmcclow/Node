@@ -651,10 +651,7 @@ impl ValueRetriever for DnsServers {
     }
 
     fn is_required(&self, _params: &SetupCluster) -> bool {
-        match _params.get("neighborhood-mode") {
-            Some(nhm) if &nhm.value == "consume-only" => false,
-            _ => true,
-        }
+        !matches!(_params.get("neighborhood-mode"), Some(nhm) if &nhm.value == "consume-only")
     }
 }
 

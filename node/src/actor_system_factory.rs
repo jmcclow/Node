@@ -173,7 +173,7 @@ impl ActorSystemFactoryReal {
         send_bind_message!(peer_actors.ui_gateway, peer_actors);
         send_bind_message!(peer_actors.blockchain_bridge, peer_actors);
         send_bind_message!(peer_actors.configurator, peer_actors);
-        if *&proxy_client_subs.is_some() {
+        if proxy_client_subs.is_some() {
             send_bind_message_opt!(peer_actors.proxy_client_opt, peer_actors);
         }
         stream_handler_pool_subs
@@ -458,8 +458,8 @@ mod tests {
     use crate::sub_lib::stream_handler_pool::DispatcherNodeQueryResponse;
     use crate::sub_lib::stream_handler_pool::TransmitDataMsg;
     use crate::sub_lib::ui_gateway::UiGatewayConfig;
-    use crate::test_utils::recorder::Recording;
     use crate::test_utils::recorder::Recorder;
+    use crate::test_utils::recorder::Recording;
     use crate::test_utils::{alias_cryptde, rate_pack};
     use crate::test_utils::{main_cryptde, make_wallet};
     use actix::System;
