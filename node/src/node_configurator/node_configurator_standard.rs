@@ -107,14 +107,6 @@ const HELP_TEXT: &str = indoc!(
 
         MASQNode --help --dump-config
 
-    If you want to generate wallets to earn money into and spend money from, try:
-
-        MASQNode --help --generate-wallet
-
-    If you already have a set of wallets you want Node to use, try:
-
-        MASQNode --help --recover-wallet
-
     MASQ Node listens for connections from other Nodes using the computer's
     network interface. Configuring the internet router for port forwarding is a necessary
     step for Node users to permit network communication between Nodes.
@@ -568,9 +560,17 @@ pub mod standard {
                 }
             }
             Some(ref s) if s == "consume-only" => {
+                let mut errors = ConfiguratorError::new (vec![]);
                 if neighbor_configs.is_empty() {
-                    Err(ConfiguratorError::required("neighborhood-mode", "Node cannot run as --neighborhood-mode consume-only without --neighbors specified"))
-                } else {
+                    errors = errors.another_required("neighborhood-mode", "Node cannot run as --neighborhood-mode consume-only without --neighbors specified");
+                }
+                if value_m!(multi_config, "dns-servers", String).is_some() {
+                    errors = errors.another_required("neighborhood-mode", "Node cannot run as --neighborhood-mode consume-only if --dns-servers is specified");
+                }
+                if errors.len() > 0 {
+                    Err(errors)
+                }
+                else {
                     Ok(NeighborhoodMode::ConsumeOnly(neighbor_configs))
                 }
             }
@@ -1330,13 +1330,15 @@ mod tests {
     }
 
     #[test]
-    fn make_neighborhood_config_consume_only_does_need_at_least_one_neighbor() {
+    fn make_neighborhood_config_consume_only_rejects_dns_servers_and_needs_at_least_one_neighbor() {
         running_test();
         let multi_config = make_new_test_multi_config(
             &app(),
             vec![Box::new(CommandLineVcl::new(
                 ArgsBuilder::new()
                     .param("--neighborhood-mode", "consume-only")
+                    .param("--dns-servers", "1.1.1.1")
+                    .param("--fake-public-key", "booga")
                     .into(),
             ))],
         )
@@ -1345,16 +1347,22 @@ mod tests {
         let result = standard::make_neighborhood_config(
             &multi_config,
             &mut FakeStreamHolder::new().streams(),
-            Some(&mut make_default_persistent_configuration().check_password_result(Ok(false))),
+            Some(&mut make_default_persistent_configuration()),
             &mut BootstrapperConfig::new(),
         );
 
         assert_eq!(
             result,
-            Err(ConfiguratorError::required(
-                "neighborhood-mode",
-                "Node cannot run as --neighborhood-mode consume-only without --neighbors specified"
-            ))
+            Err(
+                ConfiguratorError::required(
+                    "neighborhood-mode",
+                    "Node cannot run as --neighborhood-mode consume-only without --neighbors specified"
+                )
+                .another_required(
+                    "neighborhood-mode",
+                    "Node cannot run as --neighborhood-mode consume-only if --dns-servers is specified"
+                )
+            )
         )
     }
 

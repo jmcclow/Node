@@ -45,11 +45,12 @@ impl Handler<BindMessage> for Hopper {
             msg.peer_actors.dispatcher.from_dispatcher_client.clone(),
             msg.peer_actors.hopper.from_dispatcher.clone(),
         ));
+        unimplemented!("There's an unwrap in production code here. Take it out!");
         self.routing_service = Some(RoutingService::new(
             self.main_cryptde,
             self.alias_cryptde,
             RoutingServiceSubs {
-                proxy_client_subs: msg.peer_actors.proxy_client,
+                proxy_client_subs: msg.peer_actors.proxy_client_opt.unwrap(),
                 proxy_server_subs: msg.peer_actors.proxy_server,
                 neighborhood_subs: msg.peer_actors.neighborhood,
                 hopper_subs: msg.peer_actors.hopper,

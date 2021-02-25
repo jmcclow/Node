@@ -4,12 +4,15 @@ use crate::command_factory::CommandFactoryError::{CommandSyntax, UnrecognizedSub
 use crate::commands::change_password_command::ChangePasswordCommand;
 use crate::commands::check_password_command::CheckPasswordCommand;
 use crate::commands::commands_common::Command;
+use crate::commands::configuration_command::ConfigurationCommand;
 use crate::commands::crash_command::CrashCommand;
 use crate::commands::descriptor_command::DescriptorCommand;
 use crate::commands::generate_wallets_command::GenerateWalletsCommand;
+use crate::commands::recover_wallets_command::RecoverWalletsCommand;
 use crate::commands::setup_command::SetupCommand;
 use crate::commands::shutdown_command::ShutdownCommand;
 use crate::commands::start_command::StartCommand;
+use crate::commands::wallet_addresses::WalletAddressesCommand;
 
 #[derive(Debug, PartialEq)]
 pub enum CommandFactoryError {
@@ -33,7 +36,11 @@ impl CommandFactory for CommandFactoryReal {
             },
             "check-password" => match CheckPasswordCommand::new(pieces) {
                 Ok(command) => Box::new(command),
-                Err(msg) => return Err(CommandSyntax(msg)), //untested, error cannot be triggered as long as we allow passwords with white spaces
+                Err(msg) => return Err(CommandSyntax(msg)),
+            },
+            "configuration" => match ConfigurationCommand::new(pieces) {
+                Ok(command) => Box::new(command),
+                Err(msg) => return Err(CommandSyntax(msg)),
             },
             "crash" => match CrashCommand::new(pieces) {
                 Ok(command) => Box::new(command),
@@ -41,6 +48,10 @@ impl CommandFactory for CommandFactoryReal {
             },
             "descriptor" => Box::new(DescriptorCommand::new()),
             "generate-wallets" => match GenerateWalletsCommand::new(pieces) {
+                Ok(command) => Box::new(command),
+                Err(msg) => return Err(CommandSyntax(msg)),
+            },
+            "recover-wallets" => match RecoverWalletsCommand::new(pieces) {
                 Ok(command) => Box::new(command),
                 Err(msg) => return Err(CommandSyntax(msg)),
             },
@@ -54,6 +65,10 @@ impl CommandFactory for CommandFactoryReal {
             },
             "shutdown" => Box::new(ShutdownCommand::new()),
             "start" => Box::new(StartCommand::new()),
+            "wallet-addresses" => match WalletAddressesCommand::new(pieces) {
+                Ok(command) => Box::new(command),
+                Err(msg) => return Err(CommandSyntax(msg)),
+            },
             unrecognized => return Err(UnrecognizedSubcommand(unrecognized.to_string())),
         };
         Ok(boxed_command)
@@ -85,6 +100,114 @@ mod tests {
     }
 
     #[test]
+    fn factory_produces_change_password() {
+        let subject = CommandFactoryReal::new();
+
+        let command = subject
+            .make(vec![
+                "change-password".to_string(),
+                "abracadabra".to_string(),
+                "boringPassword".to_string(),
+            ])
+            .unwrap();
+
+        assert_eq!(
+            command
+                .as_any()
+                .downcast_ref::<ChangePasswordCommand>()
+                .unwrap(),
+            &ChangePasswordCommand {
+                old_password: Some("abracadabra".to_string()),
+                new_password: "boringPassword".to_string()
+            }
+        );
+    }
+
+    #[test]
+    fn factory_complains_about_change_password_with_one_parameter() {
+        let subject = CommandFactoryReal::new();
+        let result = subject
+            .make(vec![
+                "change-password".to_string(),
+                "abracadabra".to_string(),
+            ])
+            .err()
+            .unwrap();
+
+        let err = match result {
+            CommandFactoryError::CommandSyntax(s) => s,
+            x => panic!("Expected CommandSyntax error; got {:?}", x),
+        };
+        assert_eq!(
+            err.contains("The following required arguments were not provided"),
+            true,
+            "{}",
+            err
+        );
+    }
+
+    #[test]
+    fn factory_produces_check_password() {
+        let subject = CommandFactoryReal::new();
+
+        let result = subject
+            .make(vec!["check-password".to_string(), "bonkers".to_string()])
+            .unwrap();
+
+        let check_password_command: &CheckPasswordCommand = result.as_any().downcast_ref().unwrap();
+        assert_eq!(
+            check_password_command,
+            &CheckPasswordCommand {
+                db_password_opt: Some("bonkers".to_string()),
+            }
+        );
+    }
+
+    #[test]
+    fn complains_about_check_password_command_with_bad_syntax() {
+        let subject = CommandFactoryReal::new();
+
+        let result = subject.make(vec![
+            "check-password".to_string(),
+            "bonkers".to_string(),
+            "invalid".to_string(),
+        ]);
+
+        match result {
+            Err(CommandFactoryError::CommandSyntax(msg)) => {
+                // Note: when run with MASQ/Node/ci/all.sh, msg contains escape sequences for color.
+                assert_eq!(
+                    msg.contains("which wasn't expected, or isn't valid in this context"),
+                    true,
+                    "{}",
+                    msg
+                )
+            }
+            x => panic!("Expected CommandSyntax error, got {:?}", x),
+        }
+    }
+
+    #[test]
+    fn factory_produces_set_password() {
+        let subject = CommandFactoryReal::new();
+
+        let command = subject
+            .make(vec!["set-password".to_string(), "abracadabra".to_string()])
+            .unwrap();
+
+        assert_eq!(
+            command
+                .as_any()
+                .downcast_ref::<ChangePasswordCommand>()
+                .unwrap(),
+            &ChangePasswordCommand {
+                old_password: None,
+                new_password: "abracadabra".to_string()
+            }
+        );
+    }
+
+    #[test]
     fn complains_about_setup_command_with_bad_syntax() {
         let subject = CommandFactoryReal::new();
 
@@ -99,6 +222,33 @@ mod tests {
         };
         assert_eq!(msg.contains("Found argument '"), true, "{}", msg);
         assert_eq!(msg.contains("--booga"), true, "{}", msg);
+        assert_eq!(
+            msg.contains("which wasn't expected, or isn't valid in this context"),
+            true,
+            "{}",
+            msg
+        );
+    }
+
+    #[test]
+    fn complains_about_configuration_command_with_bad_syntax() {
+        let subject = CommandFactoryReal::new();
+
+        let result = subject
+            .make(vec![
+                "configuration".to_string(),
+                "--invalid".to_string(),
+                "booga".to_string(),
+            ])
+            .err()
+            .unwrap();
+
+        let msg = match result {
+            CommandSyntax(msg) => msg,
+            x => panic!("Expected syntax error, got {:?}", x),
+        };
+        assert_eq!(msg.contains("Found argument"), true, "{}", msg);
+        assert_eq!(msg.contains("--invalid"), true, "{}", msg);
         assert_eq!(
             msg.contains("which wasn't expected, or isn't valid in this context"),
             true,
@@ -134,7 +284,41 @@ mod tests {
         );
     }
 
-    // Rust isn't a reflective enough language to allow easy test-driving of the make() method
-    // here. Instead, we're driving the successful paths in commands_common by making real commands
-    // and executing them.
+    #[test]
+    fn testing_command_factory_with_good_command() {
+        let subject = CommandFactoryReal::new();
+
+        let result = subject
+            .make(vec!["wallet-addresses".to_string(), "bonkers".to_string()])
+            .unwrap();
+
+        let wallet_address_command: &WalletAddressesCommand =
+            result.as_any().downcast_ref().unwrap();
+        assert_eq!(
+            wallet_address_command,
+            &WalletAddressesCommand {
+                db_password: "bonkers".to_string(),
+            }
+        );
+    }
+
+    #[test]
+    fn testing_command_factory_with_bad_command() {
+        let subject = CommandFactoryReal::new();
+
+        let result = subject.make(vec!["wallet-addresses".to_string()]);
+
+        match result {
+            Err(CommandFactoryError::CommandSyntax(msg)) => {
+                // Note: when run with MASQ/Node/ci/all.sh, msg contains escape sequences for color.
+                assert_eq!(
+                    msg.contains("The following required arguments were not provided:"),
+                    true,
+                    "{}",
+                    msg
+                )
+            }
+            x => panic!("Expected CommandSyntax error, got {:?}", x),
+        }
+    }
 }
