@@ -39,7 +39,7 @@ jobs:
   upload_artifacts:
       name: Upload Artifacts
       needs: [create_release]
-      runs-on: ${{ matrix.os }}
+      runs-on:  ubuntu-latest
         strategy:
           matrix:
             os: [macOS-latest, ubuntu-latest, windows-latest]
