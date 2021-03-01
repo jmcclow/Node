@@ -19,7 +19,6 @@ jobs:
       - name: Generate the artifacts
         uses: skx/github-action-build@master
       - name: Build ${{ matrix.os }}
-        uses: skx/github-action-publish-binaries@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -37,3 +36,18 @@ jobs:
         with:
           name: Build Results ${{ matrix.os }}
           path: results
+upload_artifacts:
+    name: Upload Artifacts
+    needs: [create_release]
+    runs-on: ${{ matrix.os }}
+      strategy:
+        matrix:
+          os: [macOS-latest, ubuntu-latest, windows-latest]
+    steps:
+      - name: Upload the artifacts
+        uses: skx/github-action-publish-binaries@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          releaseId: ${{ needs.create_release.outputs.id }}
+          args: '*-latest.zip'
