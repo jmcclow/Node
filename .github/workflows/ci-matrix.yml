@@ -18,7 +18,7 @@ jobs:
       - name: Cache sccache results
         uses: actions/cache@v1
         env:
-          cache-name: cache-node-modules
+          cache-name: cache-node-modulese
         with:
           path: ~/.cargo/cache
           key: ${{ runner.os }}-0001
@@ -38,3 +38,7 @@ jobs:
         with:
           name: Build Results ${{ matrix.os }}
           path: results
+      - name: Upload the artifacts
+        uses: skx/github-action-publish-binaries@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
