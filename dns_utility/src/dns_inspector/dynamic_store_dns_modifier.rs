@@ -1,6 +1,6 @@
 // Copyright (c) 2017-2019, Substratum LLC (https://substratum.net) and/or its affiliates. All rights reserved.
 #![cfg(target_os = "macos")]
-use crate::dns_modifier::DnsModifier;
+use crate::dns_inspector::dns_modifier::DnsModifier;
 use regex::Regex;
 use std::collections::HashMap;
 use std::iter::FromIterator;
@@ -409,7 +409,7 @@ impl StoreWrapperReal {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::utils::get_parameters_from;
+    use crate::dns_inspector::utils::get_parameters_from;
     use core_foundation::boolean::CFBoolean;
     use core_foundation::propertylist::CFPropertyListSubClass;
     use core_foundation::string::CFString;

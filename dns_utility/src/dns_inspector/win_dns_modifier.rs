@@ -1,7 +1,7 @@
 // Copyright (c) 2017-2019, Substratum LLC (https://substratum.net) and/or its affiliates. All rights reserved.
 
-use crate::dns_modifier::DnsModifier;
-use crate::ipconfig_wrapper::{IpconfigWrapper, IpconfigWrapperReal};
+use crate::dns_inspector::dns_modifier::DnsModifier;
+use crate::dns_inspector::ipconfig_wrapper::{IpconfigWrapper, IpconfigWrapperReal};
 use crate::netsh::{Netsh, NetshCommand, NetshError};
 use std::collections::HashSet;
 use std::fmt::Debug;
@@ -462,11 +462,11 @@ impl RegKeyReal {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::adapter_wrapper::test_utils::AdapterWrapperStub;
-    use crate::adapter_wrapper::AdapterWrapper;
-    use crate::ipconfig_wrapper::test_utils::IpconfigWrapperMock;
+    use crate::dns_inspector::adapter_wrapper::test_utils::AdapterWrapperStub;
+    use crate::dns_inspector::adapter_wrapper::AdapterWrapper;
+    use crate::dns_inspector::ipconfig_wrapper::test_utils::IpconfigWrapperMock;
     use crate::netsh::tests_utils::NetshMock;
-    use crate::utils::get_parameters_from;
+    use crate::dns_inspector::utils::get_parameters_from;
     use masq_lib::test_utils::fake_stream_holder::FakeStreamHolder;
     use std::cell::RefCell;
     use std::collections::HashMap;

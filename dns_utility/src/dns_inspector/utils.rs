@@ -3,6 +3,7 @@
 use std::sync::Arc;
 use std::sync::Mutex;
 
+#[allow(dead_code)]
 pub fn get_parameters_from<T>(parameters_arc: Arc<Mutex<Vec<T>>>) -> Vec<T>
 where
     T: Clone,

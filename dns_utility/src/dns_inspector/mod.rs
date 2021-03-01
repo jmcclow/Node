@@ -21,7 +21,27 @@ mod win_dns_modifier;
 mod utils;
 
 use std::net::IpAddr;
+use crate::dns_inspector::dns_modifier_factory::{DnsModifierFactoryReal, DnsModifierFactory};
 
 pub fn dns_servers () -> Result<Vec<IpAddr>, String> {
-    unimplemented!()
+    let factory = DnsModifierFactoryReal::new();
+    let modifier = factory.make().unwrap();
+    modifier.inspect()
+}
+
+#[cfg(test)]
+pub mod tests {
+    use super::*;
+    use crate::dns_inspector::dns_modifier_factory::{DnsModifierFactoryReal, DnsModifierFactory};
+
+    #[test]
+    fn dns_servers_works() {
+        let factory = DnsModifierFactoryReal::new();
+        let modifier = factory.make().unwrap();
+        let expected_result = modifier.inspect();
+
+        let actual_result = dns_servers();
+
+        assert_eq! (actual_result, expected_result);
+    }
 }

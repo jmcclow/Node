@@ -1,6 +1,6 @@
 // Copyright (c) 2017-2019, Substratum LLC (https://substratum.net) and/or its affiliates. All rights reserved.
 
-use crate::adapter_wrapper::{AdapterWrapper, AdapterWrapperReal};
+use crate::dns_inspector::adapter_wrapper::{AdapterWrapper, AdapterWrapperReal};
 
 pub trait IpconfigWrapper {
     fn get_adapters(&self) -> Result<Vec<Box<dyn AdapterWrapper>>, ipconfig::error::Error>;
