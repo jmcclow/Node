@@ -14,15 +14,14 @@ jobs:
       matrix:
         os: [macOS-latest, ubuntu-latest, windows-latest]
     steps:
-      - uses: actions/checkout@v2
-      - name: Cache sccache results
-        uses: actions/cache@v1
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: ~/.cargo/cache
-          key: ${{ runner.os }}-0001
+      - name: Checkout the repository
+        uses: actions/checkout@master
+      - name: Generate the artifacts
+        uses: skx/github-action-build@master
       - name: Build ${{ matrix.os }}
+        uses: skx/github-action-publish-binaries@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           rustup show
           rustup update stable
@@ -38,7 +37,3 @@ jobs:
         with:
           name: Build Results ${{ matrix.os }}
           path: results
-      - name: Upload artifacts
-        uses: skx/github-action-publish-binaries@latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
