@@ -38,7 +38,7 @@ jobs:
         with:
           name: Build Results ${{ matrix.os }}
           path: results
-      - name: Upload the artifacts
+      - name: Upload artifacts
         uses: skx/github-action-publish-binaries@latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
