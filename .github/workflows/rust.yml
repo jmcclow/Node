@@ -14,13 +14,15 @@ jobs:
       matrix:
         os: [macOS-latest, ubuntu-latest, windows-latest]
     steps:
-      - name: Checkout the repository
-        uses: actions/checkout@master
-      - name: Generate the artifacts
-        uses: skx/github-action-build@master
-      - name: Build ${{ matrix.os }}
+      - uses: actions/checkout@v2
+      - name: Cache sccache results
+        uses: actions/cache@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          cache-name: cache-node-modules
+        with:
+          path: ~/.cargo/cache
+          key: ${{ runner.os }}-0001
+      - name: Build ${{ matrix.os }}
         run: |
           rustup show
           rustup update stable
@@ -36,18 +38,13 @@ jobs:
         with:
           name: Build Results ${{ matrix.os }}
           path: results
-  upload_artifacts:
-      name: Upload Artifacts
-      needs: [create_release]
-      runs-on:  ubuntu-latest
-        strategy:
-          matrix:
-            os: [macOS-latest, ubuntu-latest, windows-latest]
-      steps:
-        - name: Upload the artifacts
-          uses: skx/github-action-publish-binaries@master
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          with:
-            releaseId: ${{ needs.create_release.outputs.id }}
-            args: '*-latest.zip'
+      - name: Create a release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: true
+          prerelease: true
