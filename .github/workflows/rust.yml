@@ -40,7 +40,7 @@ jobs:
           path: results
   glue:
     name: Glue Artficats for ${{ matrix.os }}
-    needs: Build node on ${{ matrix.os }}
+    needs: Build ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
