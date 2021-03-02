@@ -48,3 +48,4 @@ jobs:
           release_name: Release ${{ github.ref }}
           draft: true
           prerelease: true
+          args: '*-latest'
