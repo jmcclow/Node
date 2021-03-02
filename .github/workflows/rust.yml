@@ -56,6 +56,6 @@ jobs:
           tar cvfz results >> results.tgz
       - name: Upload math result for job 2
         uses: actions/upload-artifact@v2
-          with:
+        with:
           name: Build Results ${{ matrix.os }}
           path: results.tgz
