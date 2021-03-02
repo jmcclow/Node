@@ -1,4 +1,4 @@
-name: ci-matrix
+name: rust
 
 on:
   pull_request:
