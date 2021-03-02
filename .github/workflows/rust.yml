@@ -40,22 +40,22 @@ jobs:
           path: results
   glue:
     name: Glue Artficats for ${{ matrix.os }}
-      needs: Build node on ${{ matrix.os }}
+    needs: Build node on ${{ matrix.os }}
       runs-on: ${{ matrix.os }}
         strategy:
           matrix:
             os: [macOS-latest, ubuntu-latest, windows-latest]
-      steps:
-        - name: Download artifact for  ${{ matrix.os }}
-          uses: actions/download-artifact@v2
+    steps:
+      - name: Download artifact for  ${{ matrix.os }}
+        uses: actions/download-artifact@v2
+        with:
+          name: Build Results ${{ matrix.os }}
+          path: results
+      - shell: bash
+        run: |
+          tar cvfz results >> results.tgz
+      - name: Upload math result for job 2
+        uses: actions/upload-artifact@v2
           with:
-            name: Build Results ${{ matrix.os }}
-            path: results
-        - shell: bash
-          run: |
-            tar cvfz results >> results.tgz
-        - name: Upload math result for job 2
-          uses: actions/upload-artifact@v2
-           with:
-            name: Build Results ${{ matrix.os }}
-            path: results.tgz
+          name: Build Results ${{ matrix.os }}
+          path: results.tgz
