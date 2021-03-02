@@ -41,10 +41,10 @@ jobs:
   glue:
     name: Glue Artficats for ${{ matrix.os }}
     needs: Build node on ${{ matrix.os }}
-      runs-on: ${{ matrix.os }}
-        strategy:
-          matrix:
-            os: [macOS-latest, ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macOS-latest, ubuntu-latest, windows-latest]
     steps:
       - name: Download artifact for  ${{ matrix.os }}
         uses: actions/download-artifact@v2
