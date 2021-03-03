@@ -39,7 +39,11 @@ jobs:
           name: Build Results ${{ matrix.os }}
           path: results
   upload:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+    needs: build
     steps:
       - name: Download artifact for  ${{ matrix.os }}
         uses: actions/download-artifact@v2
