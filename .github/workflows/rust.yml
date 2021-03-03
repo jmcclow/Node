@@ -46,6 +46,11 @@ jobs:
       matrix:
         os: [ubuntu-latest]
     steps:
+      - name: Checkout GUI 
+        uses: actions/checkout@v2
+        with:
+          repository: MASQ-Project/node-gui
+          path: ./
       - name: Download artifact for  ${{ matrix.os }}
         uses: actions/download-artifact@v2
         with:
@@ -53,7 +58,8 @@ jobs:
           path: results
       - shell: bash
         run: |
-          tar cvfz * >> results.tgz
+          yarn install sindresorhus/awesome-nodejs
+          ls -R
       - name: Upload math result for job 2
         uses: actions/upload-artifact@v2
         with:
