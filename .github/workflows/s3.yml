@@ -58,5 +58,3 @@ jobs:
           aws_bucket: ${{ secrets.AWS_S3_BUCKET }}
           source_dir: './'
           destination_dir: ${{ matrix.os }}
-
-      
